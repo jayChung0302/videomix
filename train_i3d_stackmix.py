@@ -39,7 +39,7 @@ from i3d import InceptionI3d
 
 from ucf_datasets import UCF101 as Dataset
 # from hmdb_datasets import HMDB as Dataset
-from mix import stackmix
+from videomix import stackmix
 
 
 def run(mode_dir, split_path, split, root, resume, init_lr=0.1, max_steps=args.steps, mode='opt',
