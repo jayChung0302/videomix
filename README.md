@@ -7,7 +7,7 @@ Implementation of brand new video augmentation strategy for video action recogni
 
 <img src="./imgs/fig1.png" width="80%" height="80%"></img>
 
-Tubemix is like a 'video-in-video' augmentation, and Stackmix is 'video-to-video'. Use videomix.py to implement Tubemix and Stackmix.
+Tubemix is like a 'video-in-video' augmentation, and Stackmix is 'video-to-video'. Use <code>videomix.py</code> for implementing Tubemix and Stackmix.
 
 ## Example
 
