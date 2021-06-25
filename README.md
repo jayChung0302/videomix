@@ -2,10 +2,11 @@
 Implementation of brand new video augmentation strategy for video action recognition with 3D CNN.
 
 - reference
-videomix paper: https://arxiv.org/abs/2012.03457
-pytorch-i3d(basic video transformation code): https://github.com/piergiaj/pytorch-i3d
+  - videomix paper: https://arxiv.org/abs/2012.03457
+  - pytorch-i3d(basic video transformation code): https://github.com/piergiaj/pytorch-i3d
 
-<img src="./imgs/fig1.png" width="50%" height="50%"></img>
+<img src="./imgs/fig1.png" width="80%" height="80%"></img>
+
 Tubemix is like a 'video-in-video' augmentation, and Stackmix is 'video-to-video'. Use videomix.py to implement Tubemix and Stackmix.
 
 ## Example
@@ -32,9 +33,12 @@ opt flow-u stackmix             |  opt flow-u tubemix
 
 ## Experimental Result
 Training on I3D with Stackmix and Tubemix augmentation.
+
 \* *RCRF* represents applying random crop and random flipping
 Probability of implementing Stackmix or Tubemix is fixed to p=0.5.
-I've also explored how beta distribution effect on training accuracy. Figure below shows the PDF of &\lambda$~beta(α,α)
+
+I've also explored how beta distribution effect on training accuracy. Figure below shows the PDF of &\lambda$~beta(α,α).
+
 <img src="./imgs/fig2.png" width="80%" height="80%"></img>
 - UCF-101
 
@@ -66,5 +70,5 @@ I've also explored how beta distribution effect on training accuracy. Figure bel
 Apply on UCF-101, Stackmix and Tubemix could derive performance improvement(+1~2%) with UCF-101 datasets in both streams. However, when applied to HMDB-51, the performance of temporal stream was improved, but the performance of spatial stream was rather reduced.
 
 ### Future work
-\* speed jittering augmentation is work in progress. Conecpt is jittering speed of actions.
+- Speed jittering augmentation is work in progress.
 
