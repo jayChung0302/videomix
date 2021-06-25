@@ -20,6 +20,9 @@ def stackmix(x, y, alpha, prob, nframes=64):
         return x, y, y
 
 def tubemix(x, y, alpha, prob):
+    if prob < 0:
+        raise ValueError('prob must be a positive value')
+
     k = random.random()
     if k > 1 - prob:
         batch_size = x.size()[0]
@@ -41,7 +44,6 @@ def rand_bbox(size, lam):
     cut_w = np.int(W * cut_rat)
     cut_h = np.int(H * cut_rat)
 
-    # uniform
     cx = np.random.randint(W)
     cy = np.random.randint(H)
 
