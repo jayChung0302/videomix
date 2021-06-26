@@ -116,9 +116,6 @@ def load_flow_frames(image_dir, vid, start, num, total_frames):
         j = i
         while j > total_frames:
             j = j - total_frames
-        # print(image_dir)  #E:/Dropbox/LAB/DATASET/hmdb-51/jpegs_256
-        # print(vid)  #April_09_brush_hair_u_nm_np1_ba_goo_0
-        # print(j)
         try:
             imgx = cv2.imread(os.path.join(image_dir, 'u', vid, 'frame' +
                                            str(j).zfill(6) + '.jpg'), cv2.IMREAD_GRAYSCALE)
@@ -175,10 +172,6 @@ def make_dataset(root, data, num_classes=51):
         label = data[vid]
         labels = np.zeros((num_classes, 64), np.float32)  # 101, frame) size label generation
         labels[label, :] = 1
-        # if num_frames == 0:
-        #     print('error.')
-        #     print(vid)
-        #     sys.exit()
         dataset.append((vid, labels, num_frames))
     return dataset
 
@@ -219,14 +212,12 @@ class HMDB(data_utl.Dataset):
         else:
             imgs = load_flow_frames(self.data_dir, vid, start_f, 64, nf)
 
-        # label = label[:, start_f:start_f + 64]
 
         imgs = self.transforms(imgs)
         label = torch.from_numpy(label)
         # return torch.from_numpy(label)
         # return video_to_tensor(imgs), label, 'v_' + vid
         return video_to_tensor(imgs), label
-        #todo: 위에 'v_'+ vid 는 test 할시에만. 훈련할땐 제거해주자.
 
     def __len__(self):
         return len(self.data)
@@ -236,7 +227,6 @@ def video_imshow(inp, labels, mode):
     """Imshow for 5 dim Tensor."""
     if mode == 'rgb':
         fig1 = plt.figure(figsize=(9, 9))
-        # 1,3,64,224,224
         img = inp.squeeze().numpy().transpose((2, 3, 0, 1))
         rows = 8
         cols = 8
@@ -253,15 +243,9 @@ def video_imshow(inp, labels, mode):
         plt.show()
 
     else:
-        # inp = inp.squeeze()[0,0,:,:].numpy().transpose((1, 2, 0))
         u = inp.squeeze().numpy()[0, :, :, :].squeeze().transpose((1, 2, 0))
         v = inp.squeeze().numpy()[1, :, :, :].squeeze().transpose((1, 2, 0))
-        # mean = np.array([0.485, 0.456, 0.406])
-        # std = np.array([0.229, 0.224, 0.225])
-        # inp = std * inp + mean
-        # inp = np.clip
         fig1 = plt.figure(figsize=(9,9))
-        # print((classes[labels.item()].split()[1]))
         fig2 = plt.figure(figsize=(9,9))
 
         rows = 8
@@ -287,34 +271,21 @@ def video_imshow(inp, labels, mode):
 
 
 if __name__ == '__main__':
-    # split_path = 'C:/UCF101/ucfTrainTestlist/'
     split_path = 'HMDB-51_splits/'
     split = '1'
-    # root = 'E:/Dropbox/LAB/DIPL_18/codes/pytorch-two-stream-action-recognition-master/dataloader/dic/frame_count.pickle'
-    # opt_dir = 'C:/UCF101/tvl1_flow'
     root = 'hmdb_frame_counts.pickle'
     rgb_dir = 'E:/Dropbox/LAB/DATASET/hmdb-51/jpegs_256'
     opt_dir = 'E:/Dropbox/LAB/DATASET/hmdb-51/tvl1_flow'
-    # rand_folder = 'v_ApplyEyeMakeup_g03_c01'
-    # k = load_flow_frames(opt_dir, rand_folder, 4, 32)
     train_transforms = transforms.Compose([videotransforms.RandomCrop(224),
                                            videotransforms.RandomHorizontalFlip(), ])
     train_dataset = HMDB(opt_dir, split_path, split, stage='train', mode='opt',
                            pickle_dir=root, transforms=train_transforms)
-    # test_dataset = UCF101(opt_dir, split_path, split, stage='test', mode='opt', pickle_dir=root, transforms=None)
     train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=1, shuffle=False, num_workers=1,
                                              pin_memory=True)
     for data in train_dataloader:
         x, Y = data
         print(x.size(), Y.size())
-        # print(Y[Y>0])
         break
-
-    # # class names
-    # with open('classInd.txt') as f:
-    #     class_names = f.readlines()
-    #     class_names = [x.strip('\r\n') for x in class_names]
-    # f.close()
 
     # plot examples of opt mode
     inputs, labels = next(iter(train_dataloader))

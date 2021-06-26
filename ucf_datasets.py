@@ -56,12 +56,10 @@ class UCF101_splitter():
         f.close()
         dic = {}
         for line in content:
-            # print line
             video = line.split('/', 1)[1].split(' ', 1)[0]
             key = video.split('_', 1)[1].split('.', 1)[0]
             label = self.action_label[line.split('/')[0]]
             dic[key] = int(label)
-            # print key,label
         return dic
 
     def name_HandstandPushups(self, dic):
@@ -277,20 +275,14 @@ def video_imshow(inp, labels, classes, mode):
 
 
 if __name__ == '__main__':
-    # split_path = 'C:/UCF101/ucfTrainTestlist/'
     split_path = 'ucfTrainTestlist/'
     split = '02'
-    # root = 'E:/Dropbox/LAB/DIPL_18/codes/pytorch-two-stream-action-recognition-master/dataloader/dic/frame_count.pickle'
-    # opt_dir = 'C:/UCF101/tvl1_flow'
     root = 'frame_count.pickle'
     rgb_dir = 'C:/DATASET/jpegs_256'
-    # rand_folder = 'v_ApplyEyeMakeup_g03_c01'
-    # k = load_flow_frames(opt_dir, rand_folder, 4, 32)
     train_transforms = transforms.Compose([videotransforms.RandomCrop(224),
                                            videotransforms.RandomHorizontalFlip(), ])
     train_dataset = UCF101(rgb_dir, split_path, split, stage='train', mode='rgb',
                            pickle_dir=root, transforms=train_transforms)
-    # test_dataset = UCF101(opt_dir, split_path, split, stage='test', mode='opt', pickle_dir=root, transforms=None)
     train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=4,
                                              pin_memory=True)
     for data in train_dataloader:
